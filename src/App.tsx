@@ -20,7 +20,7 @@ import DataManagementModal from './components/ui/DataManagementModal';
 import TipPanel from './components/ui/TipPanel';
 import ConfirmModal from './components/ui/ConfirmModal';
 
-import { Plus, Play, Calendar, ArrowRightLeft, Trash2, Database } from 'lucide-react';
+import { Plus, Play, Calendar, ArrowRightLeft, Trash2, Database, RotateCcw } from 'lucide-react';
 import { cn } from './utils/utils';
 import { useState } from 'react';
 
@@ -46,7 +46,9 @@ function App() {
     setIsAddTransferModalOpen,
     clearAllData,
     setIsDataModalOpen,
-    openConfirmModal
+    openConfirmModal,
+    isSimulationRunning,
+    resetSimulation
   } = useSimulationStore();
 
   const [years, setYears] = useState(Math.floor(totalMonths / 12));
@@ -101,16 +103,16 @@ function App() {
             <button
               onClick={() => {
                 openConfirmModal({
-                  title: '전체 초기화',
-                  message: '모든 통장과 자동이체 내역이 삭제됩니다. 정말 초기화하시겠습니까?',
+                  title: '모두 지우기',
+                  message: '모든 통장과 자동이체 내역이 지워집니다. 정말 지우시겠습니까?',
                   onConfirm: clearAllData
                 });
               }}
               className="flex items-center gap-1.5 px-2 md:px-3 py-1.5 rounded-lg text-[10px] md:text-[11px] font-bold text-gray-400 hover:text-toss-red hover:bg-red-50 transition-all active:scale-95"
-              title="전체 초기화"
+              title="모두 지우기"
             >
               <Trash2 size={14} />
-              <span className="hidden md:inline">전체 초기화</span>
+              <span className="hidden md:inline">모두 지우기</span>
             </button>
             <button
               onClick={() => setIsDataModalOpen(true)}
@@ -196,17 +198,31 @@ function App() {
                 </div>
               )}
             </div>
-            <button
-              onClick={handleRunSimulation}
-              className={cn(
-                "flex items-center gap-1.5 px-4 md:px-5 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all",
-                "bg-toss-blue text-white hover:bg-toss-blue-hover shadow-md active:scale-95"
-              )}
-              title="시뮬레이션 시작"
-            >
-              <Play size={16} fill="currentColor" className="md:w-[18px] md:h-[18px]" />
-              <span className="whitespace-nowrap">시작</span>
-            </button>
+            {isSimulationRunning ? (
+              <button
+                onClick={resetSimulation}
+                className={cn(
+                  "flex items-center gap-1.5 px-4 md:px-5 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all",
+                  "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 active:scale-95 shadow-sm"
+                )}
+                title="시뮬레이션 초기화"
+              >
+                <RotateCcw size={16} className="md:w-[18px] md:h-[18px] text-toss-blue" />
+                <span className="whitespace-nowrap">초기화</span>
+              </button>
+            ) : (
+              <button
+                onClick={handleRunSimulation}
+                className={cn(
+                  "flex items-center gap-1.5 px-4 md:px-5 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all",
+                  "bg-toss-blue text-white hover:bg-toss-blue-hover shadow-md active:scale-95"
+                )}
+                title="시뮬레이션 시작"
+              >
+                <Play size={16} fill="currentColor" className="md:w-[18px] md:h-[18px]" />
+                <span className="whitespace-nowrap">시작</span>
+              </button>
+            )}
           </div>
         </div>
       </header>

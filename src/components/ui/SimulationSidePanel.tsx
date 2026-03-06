@@ -139,7 +139,7 @@ export default function SimulationSidePanel() {
                     onClick={resetSimulation}
                     className="flex-1 h-14 rounded-2xl font-bold bg-toss-blue text-white hover:bg-toss-blue-hover shadow-md transition-all active:scale-95"
                 >
-                    설정으로 돌아가기
+                    다시 해보기
                 </button>
             </div>
         </aside>

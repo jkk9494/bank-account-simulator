@@ -19,11 +19,22 @@ export function formatCurrencyUnit(amount: number): string {
 }
 
 /** 
- * '만 원' 단위 숫자를 입력받아 "O만 원" 포맷으로 변환합니다. 
+ * '만 원' 단위 숫자를 입력받아 "O억 O만 원" 포맷으로 변환합니다. 
  */
 export function formatCurrencyLabel(amount: number): string {
     if (isNaN(amount) || amount === 0) return "0원";
-    return `${formatCurrencyUnit(amount)}만 원`;
+
+    const eok = Math.floor(amount / 10000);
+    const man = Math.floor(amount % 10000);
+
+    if (eok > 0) {
+        if (man > 0) {
+            return `${formatCurrencyUnit(eok)}억 ${formatCurrencyUnit(man)}만 원`;
+        }
+        return `${formatCurrencyUnit(eok)}억 원`;
+    }
+
+    return `${formatCurrencyUnit(man)}만 원`;
 }
 
 /**
