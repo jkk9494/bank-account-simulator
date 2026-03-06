@@ -67,19 +67,19 @@ const TipPanel = () => {
                 isMobile ? "mt-4" : "mb-4"
             )}
         >
-            <div className="flex items-start gap-2.5">
-                <div className="mt-0.5 bg-toss-blue/10 p-1.5 rounded-lg shrink-0">
+            <div className="flex items-center gap-2.5">
+                <div className="bg-toss-blue/10 p-1.5 rounded-lg shrink-0">
                     <Info size={14} className="text-toss-blue" />
                 </div>
                 <div className="text-[11px] md:text-[13px] text-gray-700 font-medium leading-relaxed">
-                    <span className="font-bold text-toss-blue mr-1">팁:</span>
+                    <span className="font-bold text-toss-blue mr-1 whitespace-nowrap">팁:</span>
                     {tip}
                 </div>
             </div>
 
             <button
                 onClick={handleClose}
-                className="absolute top-2 right-2 p-1.5 rounded-lg text-gray-300 hover:text-gray-500 hover:bg-gray-100/50 transition-all opacity-0 group-hover:opacity-100 md:opacity-0"
+                className="absolute top-2 right-2 p-1.5 rounded-lg text-gray-300 hover:text-gray-500 hover:bg-gray-100/50 transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100"
                 title="팁 끄기"
             >
                 <X size={14} />

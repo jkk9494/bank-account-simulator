@@ -29,7 +29,7 @@ export default function SimulationSidePanel() {
     const totalBalance = (simulationResultNodes || []).reduce((sum, n) => sum + n.data.initialBalance, 0);
 
     return (
-        <aside className="fixed inset-y-0 right-0 w-full md:w-80 h-full bg-white border-l border-gray-100 flex flex-col shadow-2xl animate-in slide-in-from-right duration-300 z-50">
+        <aside className="fixed inset-y-0 right-0 w-full md:w-80 h-full bg-white border-l border-gray-100 flex flex-col shadow-2xl animate-in slide-in-from-right duration-300 z-[120]">
             <div className="flex items-center justify-between p-4 md:p-5 border-b border-gray-50 shrink-0">
                 <div>
                     <h2 className="text-base md:text-lg font-bold text-gray-900 tracking-tight">시뮬레이션 결과</h2>

@@ -20,7 +20,7 @@ import DataManagementModal from './components/ui/DataManagementModal';
 import TipPanel from './components/ui/TipPanel';
 import ConfirmModal from './components/ui/ConfirmModal';
 
-import { Plus, Play, Calendar, ArrowRightLeft, Trash2, Database, RotateCcw } from 'lucide-react';
+import { Plus, Play, Calendar, ArrowRightLeft, Trash2, Database, RotateCcw, LayoutList } from 'lucide-react';
 import { cn } from './utils/utils';
 import { useState } from 'react';
 
@@ -48,7 +48,10 @@ function App() {
     setIsDataModalOpen,
     openConfirmModal,
     isSimulationRunning,
-    resetSimulation
+    resetSimulation,
+    showResults,
+    setShowResults,
+    simulationResultNodes
   } = useSimulationStore();
 
   const [years, setYears] = useState(Math.floor(totalMonths / 12));
@@ -99,7 +102,7 @@ function App() {
 
         <div className="flex items-center justify-between w-full md:w-auto gap-2 md:gap-3">
           {/* Period Selector - Moved next to simulation button */}
-          <div className="flex items-center gap-3 md:gap-2 border-l border-gray-100 pl-5 md:pl-3">
+          <div className="flex items-center gap-2 md:gap-1.5 border-l border-gray-100 pl-4 md:pl-2">
             <button
               onClick={() => {
                 openConfirmModal({
@@ -108,23 +111,23 @@ function App() {
                   onConfirm: clearAllData
                 });
               }}
-              className="flex items-center gap-1.5 px-2 md:px-3 py-1.5 rounded-lg text-[10px] md:text-[11px] font-bold text-gray-400 hover:text-toss-red hover:bg-red-50 transition-all active:scale-95"
+              className="flex items-center justify-center gap-1.5 px-2 md:px-3 py-1.5 rounded-lg text-[10px] md:text-[11px] font-bold text-gray-400 hover:text-toss-red hover:bg-red-50 transition-all active:scale-95"
               title="모두 지우기"
             >
               <Trash2 size={14} />
-              <span className="hidden md:inline">모두 지우기</span>
+              <span className="leading-none">모두 지우기</span>
             </button>
             <button
               onClick={() => setIsDataModalOpen(true)}
-              className="flex items-center gap-1.5 px-2 md:px-3 py-1.5 rounded-lg text-[10px] md:text-[11px] font-bold text-gray-400 hover:text-toss-blue hover:bg-blue-50 transition-all active:scale-95"
+              className="flex items-center justify-center gap-1.5 px-2 md:px-3 py-1.5 rounded-lg text-[10px] md:text-[11px] font-bold text-gray-400 hover:text-toss-blue hover:bg-blue-50 transition-all active:scale-95"
               title="데이터 관리"
             >
               <Database size={14} />
-              <span className="hidden md:inline">데이터 관리</span>
+              <span className="leading-none">데이터 관리</span>
             </button>
           </div>
 
-          <div className="flex items-center gap-1.5 md:gap-3 border-l border-gray-100 pl-2 md:pl-4">
+          <div className="flex items-center gap-1 md:gap-2 border-l border-gray-100 pl-2 md:pl-3">
             <button
               onClick={() => setIsAddTransferModalOpen(true)}
               className={cn(
@@ -140,13 +143,13 @@ function App() {
             <button
               onClick={handleAddAccount}
               className={cn(
-                "flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all",
+                "flex items-center gap-1 px-2.5 md:px-3 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all shrink-0",
                 "bg-toss-light-blue text-toss-blue hover:bg-blue-100 active:scale-95"
               )}
               title="통장 추가"
             >
               <Plus size={16} className="md:w-[18px] md:h-[18px]" />
-              <span className="hidden sm:inline">통장 추가</span>
+              <span className="hidden lg:inline whitespace-nowrap">통장 추가</span>
             </button>
             <div className="hidden md:flex relative group">
               <div className={cn(
@@ -156,7 +159,7 @@ function App() {
                 <div className="flex items-center px-1.5 md:px-2 py-1 gap-1">
                   <Calendar size={14} className={cn(periodError ? "text-toss-red" : "text-gray-400")} />
                   <span className={cn(
-                    "text-[10px] md:text-xs font-bold uppercase hidden md:inline",
+                    "text-[10px] md:text-xs font-bold uppercase hidden md:inline whitespace-nowrap",
                     periodError ? "text-toss-red" : "text-gray-500"
                   )}>기간</span>
                 </div>
@@ -200,17 +203,32 @@ function App() {
             </div>
             <div className="hidden md:block">
               {isSimulationRunning ? (
-                <button
-                  onClick={resetSimulation}
-                  className={cn(
-                    "flex items-center gap-1.5 px-4 md:px-5 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all",
-                    "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 active:scale-95 shadow-sm"
+                <div className="flex items-center gap-2">
+                  {!showResults && simulationResultNodes && (
+                    <button
+                      onClick={() => setShowResults(true)}
+                      className={cn(
+                        "flex items-center gap-1 px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all shrink-0",
+                        "bg-white text-toss-blue border border-toss-blue hover:bg-blue-50 active:scale-95 shadow-sm"
+                      )}
+                      title="결과 보기"
+                    >
+                      <LayoutList size={16} className="md:w-[18px] md:h-[18px]" />
+                      <span className="whitespace-nowrap">결과 보기</span>
+                    </button>
                   )}
-                  title="시뮬레이션 초기화"
-                >
-                  <RotateCcw size={16} className="md:w-[18px] md:h-[18px] text-toss-blue" />
-                  <span className="whitespace-nowrap">초기화</span>
-                </button>
+                  <button
+                    onClick={resetSimulation}
+                    className={cn(
+                      "flex items-center gap-1 px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all shrink-0",
+                      "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 active:scale-95 shadow-sm"
+                    )}
+                    title="시뮬레이션 초기화"
+                  >
+                    <RotateCcw size={16} className="md:w-[18px] md:h-[18px] text-toss-blue" />
+                    <span className="whitespace-nowrap">초기화</span>
+                  </button>
+                </div>
               ) : (
                 <button
                   onClick={handleRunSimulation}
@@ -245,7 +263,7 @@ function App() {
             className="bg-gray-50"
           >
             <Background color="#e5e8eb" gap={24} size={1} />
-            <Controls className="!bg-white !shadow-toss !border-none !rounded-2xl overflow-hidden !m-4" />
+            <Controls className="!bg-white !shadow-toss !border-none !rounded-2xl overflow-hidden !ml-4 !mt-4 !mr-4 !mb-32 md:!mb-4" />
 
             <TipPanel />
           </ReactFlow>
@@ -261,47 +279,61 @@ function App() {
           "bg-white/80 backdrop-blur-xl rounded-2xl p-3 shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-white/50 flex items-center gap-3 transition-all",
           periodError && "border-toss-red ring-2 ring-toss-red/10"
         )}>
-          <div className="flex-1 flex items-center justify-center gap-1 bg-gray-50 rounded-xl px-3 py-2.5 border border-gray-100">
-            <span className="text-[10px] font-bold text-gray-500 mr-1">기간</span>
-            <input
-              type="number"
-              min="0"
-              value={years}
-              onChange={(e) => {
-                setYears(Math.max(0, Number(e.target.value)));
-                setPeriodError(false);
-              }}
-              className={cn(
-                "w-7 text-center text-sm font-bold outline-none bg-transparent",
-                periodError ? "text-toss-red" : "text-toss-blue"
-              )}
-            />
-            <span className="text-[10px] text-gray-400 font-bold">년</span>
-            <input
-              type="number"
-              min="0"
-              value={months}
-              onChange={(e) => {
-                setMonths(Math.max(0, Number(e.target.value)));
-                setPeriodError(false);
-              }}
-              className={cn(
-                "w-7 text-center text-sm font-bold outline-none bg-transparent",
-                periodError ? "text-toss-red" : "text-toss-blue"
-              )}
-            />
-            <span className="text-[10px] text-gray-400 font-bold">월</span>
+          <div className="flex-1 flex items-center justify-center gap-1.5 bg-gray-50 rounded-xl px-2 py-2.5 border border-gray-100 min-w-0">
+            <span className="text-[10px] font-bold text-gray-400 whitespace-nowrap shrink-0">기간</span>
+            <div className="flex items-center gap-1">
+              <input
+                type="number"
+                min="0"
+                value={years}
+                onChange={(e) => {
+                  setYears(Math.max(0, Number(e.target.value)));
+                  setPeriodError(false);
+                }}
+                className={cn(
+                  "w-6 text-center text-sm font-bold outline-none bg-transparent",
+                  periodError ? "text-toss-red" : "text-toss-blue"
+                )}
+              />
+              <span className="text-[10px] text-gray-400 font-bold shrink-0">년</span>
+              <input
+                type="number"
+                min="0"
+                value={months}
+                onChange={(e) => {
+                  setMonths(Math.max(0, Number(e.target.value)));
+                  setPeriodError(false);
+                }}
+                className={cn(
+                  "w-6 text-center text-sm font-bold outline-none bg-transparent",
+                  periodError ? "text-toss-red" : "text-toss-blue"
+                )}
+              />
+              <span className="text-[10px] text-gray-400 font-bold shrink-0">월</span>
+            </div>
           </div>
 
           {isSimulationRunning ? (
-            <button
-              onClick={resetSimulation}
-              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gray-100 text-gray-700 font-bold text-sm active:scale-95 transition-all"
-            >
-              <RotateCcw size={16} className="text-toss-blue" />
-              <span>초기화</span>
-            </button>
+            <div className="flex gap-2 shrink-0">
+              {!showResults && simulationResultNodes && (
+                <button
+                  onClick={() => setShowResults(true)}
+                  className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-white text-toss-blue border border-toss-blue font-bold text-sm active:scale-95 transition-all"
+                >
+                  <LayoutList size={16} />
+                  <span className="whitespace-nowrap">결과</span>
+                </button>
+              )}
+              <button
+                onClick={resetSimulation}
+                className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-gray-100 text-gray-700 font-bold text-sm active:scale-95 transition-all"
+              >
+                <RotateCcw size={16} className="text-toss-blue" />
+                <span className="whitespace-nowrap">초기화</span>
+              </button>
+            </div>
           ) : (
+
             <button
               onClick={handleRunSimulation}
               className="flex-1 flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-toss-blue text-white font-bold text-sm shadow-md active:scale-95 transition-all"
