@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  base: '/bank/', // Caddy 서브경로 라우팅 지원
+  base: '/',
   server: {
     port: 8083,
     host: true, // 외부 접속 허용 (0.0.0.0)

@@ -10,7 +10,7 @@ RUN npm run build
 FROM nginx:alpine
 # Nginx 설정 파일 복사
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-# 빌드된 파일을 /bank 폴더에 배치
-COPY --from=build /app/dist /usr/share/nginx/html/bank
+# 빌드된 파일을 루트 폴더에 배치
+COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
