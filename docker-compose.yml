@@ -1,0 +1,6 @@
+services:
+  bank-account:
+    build: .
+    ports:
+      - "8083:80"
+    restart: always
