@@ -86,7 +86,7 @@ function App() {
   };
 
   return (
-    <div className="w-full h-screen bg-gray-50 flex flex-col font-sans overflow-hidden">
+    <div className="w-full h-dvh bg-gray-50 flex flex-col font-sans overflow-hidden">
       {/* Header */}
       <header className="md:min-h-16 bg-white border-b border-gray-100 flex flex-row items-center justify-between px-4 md:px-8 shrink-0 z-10 py-2 md:py-0 gap-0">
         <div className="flex items-center w-auto gap-4 md:gap-6">
