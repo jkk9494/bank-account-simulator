@@ -58,6 +58,16 @@ export type SimulationState = {
     setIsDataModalOpen: (open: boolean) => void;
     clearAllData: () => void;
     importData: (data: { nodes: BankAccountNode[], edges: TransferEdge[] }) => void;
+
+    // 공통 Confirm 모달
+    isConfirmModalOpen: boolean;
+    setIsConfirmModalOpen: (open: boolean) => void;
+    confirmModalConfig: {
+        title: string;
+        message: string;
+        onConfirm: () => void;
+    } | null;
+    openConfirmModal: (config: { title: string, message: string, onConfirm: () => void }) => void;
 };
 
 const initialNodes: BankAccountNode[] = [
@@ -119,6 +129,8 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
 
     isAddTransferModalOpen: false,
     isDataModalOpen: false,
+    isConfirmModalOpen: false,
+    confirmModalConfig: null,
 
     editingNodeId: null,
     editingEdgeId: null,
@@ -180,6 +192,11 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
     setShowResults: (show) => set({ showResults: show }),
     setIsAddTransferModalOpen: (open) => set({ isAddTransferModalOpen: open }),
     setIsDataModalOpen: (open) => set({ isDataModalOpen: open }),
+    setIsConfirmModalOpen: (open) => set({ isConfirmModalOpen: open }),
+    openConfirmModal: (config) => set({
+        isConfirmModalOpen: true,
+        confirmModalConfig: config
+    }),
 
     clearAllData: () => {
         get().resetSimulation();

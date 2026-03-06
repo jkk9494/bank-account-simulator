@@ -18,6 +18,7 @@ import SimulationSidePanel from './components/ui/SimulationSidePanel';
 import AddTransferModal from './components/ui/AddTransferModal';
 import DataManagementModal from './components/ui/DataManagementModal';
 import TipPanel from './components/ui/TipPanel';
+import ConfirmModal from './components/ui/ConfirmModal';
 
 import { Plus, Play, Calendar, ArrowRightLeft, Trash2, Database } from 'lucide-react';
 import { cn } from './utils/utils';
@@ -44,7 +45,8 @@ function App() {
     runSimulation,
     setIsAddTransferModalOpen,
     clearAllData,
-    setIsDataModalOpen
+    setIsDataModalOpen,
+    openConfirmModal
   } = useSimulationStore();
 
   const [years, setYears] = useState(Math.floor(totalMonths / 12));
@@ -98,9 +100,11 @@ function App() {
           <div className="flex items-center gap-3 md:gap-2 border-l border-gray-100 pl-5 md:pl-3">
             <button
               onClick={() => {
-                if (window.confirm('모든 통장과 자동이체 내역이 삭제됩니다. 정말 초기화하시겠습니까?')) {
-                  clearAllData();
-                }
+                openConfirmModal({
+                  title: '전체 초기화',
+                  message: '모든 통장과 자동이체 내역이 삭제됩니다. 정말 초기화하시겠습니까?',
+                  onConfirm: clearAllData
+                });
               }}
               className="flex items-center gap-1.5 px-2 md:px-3 py-1.5 rounded-lg text-[10px] md:text-[11px] font-bold text-gray-400 hover:text-toss-red hover:bg-red-50 transition-all active:scale-95"
               title="전체 초기화"
@@ -238,6 +242,7 @@ function App() {
       <EditEdgeModal />
       <AddTransferModal />
       <DataManagementModal />
+      <ConfirmModal />
     </div>
   );
 }
