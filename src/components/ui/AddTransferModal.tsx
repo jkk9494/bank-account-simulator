@@ -48,7 +48,7 @@ export default function AddTransferModal() {
 
     return (
         <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
-            <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="bg-white w-full max-w-md h-auto max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200 mb-20 md:mb-0">
                 <div className="p-6 border-b border-gray-50 flex items-center justify-between">
                     <h2 className="text-xl font-bold text-gray-900 tracking-tight flex items-center gap-2">
                         <ArrowRightLeft className="text-toss-blue" size={24} />
@@ -65,7 +65,7 @@ export default function AddTransferModal() {
                     </button>
                 </div>
 
-                <div className="p-6 space-y-6">
+                <div className="p-6 space-y-6 overflow-y-auto custom-scrollbar">
                     {/* Source Selection */}
                     <div className="space-y-4">
                         <div>

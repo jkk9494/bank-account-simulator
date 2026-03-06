@@ -148,7 +148,7 @@ function App() {
               <Plus size={16} className="md:w-[18px] md:h-[18px]" />
               <span className="hidden sm:inline">통장 추가</span>
             </button>
-            <div className="relative group">
+            <div className="hidden md:flex relative group">
               <div className={cn(
                 "flex items-center gap-1.5 md:gap-2 bg-gray-50 p-1 rounded-xl border transition-all",
                 periodError ? "border-toss-red bg-red-50/50 shadow-[0_0_0_2px_rgba(240,68,82,0.1)]" : "border-gray-100"
@@ -198,31 +198,33 @@ function App() {
                 </div>
               )}
             </div>
-            {isSimulationRunning ? (
-              <button
-                onClick={resetSimulation}
-                className={cn(
-                  "flex items-center gap-1.5 px-4 md:px-5 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all",
-                  "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 active:scale-95 shadow-sm"
-                )}
-                title="시뮬레이션 초기화"
-              >
-                <RotateCcw size={16} className="md:w-[18px] md:h-[18px] text-toss-blue" />
-                <span className="whitespace-nowrap">초기화</span>
-              </button>
-            ) : (
-              <button
-                onClick={handleRunSimulation}
-                className={cn(
-                  "flex items-center gap-1.5 px-4 md:px-5 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all",
-                  "bg-toss-blue text-white hover:bg-toss-blue-hover shadow-md active:scale-95"
-                )}
-                title="시뮬레이션 시작"
-              >
-                <Play size={16} fill="currentColor" className="md:w-[18px] md:h-[18px]" />
-                <span className="whitespace-nowrap">시작</span>
-              </button>
-            )}
+            <div className="hidden md:block">
+              {isSimulationRunning ? (
+                <button
+                  onClick={resetSimulation}
+                  className={cn(
+                    "flex items-center gap-1.5 px-4 md:px-5 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all",
+                    "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 active:scale-95 shadow-sm"
+                  )}
+                  title="시뮬레이션 초기화"
+                >
+                  <RotateCcw size={16} className="md:w-[18px] md:h-[18px] text-toss-blue" />
+                  <span className="whitespace-nowrap">초기화</span>
+                </button>
+              ) : (
+                <button
+                  onClick={handleRunSimulation}
+                  className={cn(
+                    "flex items-center gap-1.5 px-4 md:px-5 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all",
+                    "bg-toss-blue text-white hover:bg-toss-blue-hover shadow-md active:scale-95"
+                  )}
+                  title="시뮬레이션 시작"
+                >
+                  <Play size={16} fill="currentColor" className="md:w-[18px] md:h-[18px]" />
+                  <span className="whitespace-nowrap">시작</span>
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </header>
@@ -251,6 +253,71 @@ function App() {
 
         {/* Side Panel */}
         <SimulationSidePanel />
+      </div>
+
+      {/* Mobile Floating Action Bar */}
+      <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-2rem)] max-w-sm">
+        <div className={cn(
+          "bg-white/80 backdrop-blur-xl rounded-2xl p-3 shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-white/50 flex items-center gap-3 transition-all",
+          periodError && "border-toss-red ring-2 ring-toss-red/10"
+        )}>
+          <div className="flex-1 flex items-center justify-center gap-1 bg-gray-50 rounded-xl px-3 py-2.5 border border-gray-100">
+            <span className="text-[10px] font-bold text-gray-500 mr-1">기간</span>
+            <input
+              type="number"
+              min="0"
+              value={years}
+              onChange={(e) => {
+                setYears(Math.max(0, Number(e.target.value)));
+                setPeriodError(false);
+              }}
+              className={cn(
+                "w-7 text-center text-sm font-bold outline-none bg-transparent",
+                periodError ? "text-toss-red" : "text-toss-blue"
+              )}
+            />
+            <span className="text-[10px] text-gray-400 font-bold">년</span>
+            <input
+              type="number"
+              min="0"
+              value={months}
+              onChange={(e) => {
+                setMonths(Math.max(0, Number(e.target.value)));
+                setPeriodError(false);
+              }}
+              className={cn(
+                "w-7 text-center text-sm font-bold outline-none bg-transparent",
+                periodError ? "text-toss-red" : "text-toss-blue"
+              )}
+            />
+            <span className="text-[10px] text-gray-400 font-bold">월</span>
+          </div>
+
+          {isSimulationRunning ? (
+            <button
+              onClick={resetSimulation}
+              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gray-100 text-gray-700 font-bold text-sm active:scale-95 transition-all"
+            >
+              <RotateCcw size={16} className="text-toss-blue" />
+              <span>초기화</span>
+            </button>
+          ) : (
+            <button
+              onClick={handleRunSimulation}
+              className="flex-1 flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-toss-blue text-white font-bold text-sm shadow-md active:scale-95 transition-all"
+            >
+              <Play size={16} fill="currentColor" />
+              <span>시작</span>
+            </button>
+          )}
+
+          {periodError && (
+            <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-toss-red text-white text-[10px] px-3 py-1.5 rounded-full shadow-lg whitespace-nowrap">
+              기간을 설정해주세요!
+              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-toss-red rotate-45"></div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Modals */}

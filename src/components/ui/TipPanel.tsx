@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { Panel } from '@xyflow/react';
 import { X, Lightbulb, Info } from 'lucide-react';
 import { useSimulationStore } from '../../store/useSimulationStore';
+import { cn } from '../../utils/utils';
 
 const TipPanel = () => {
     const { nodes, edges, showResults } = useSimulationStore();
     const [isVisible, setIsVisible] = useState(true);
     const [tip, setTip] = useState('');
+    const [isMobile, setIsMobile] = useState(false);
 
     // 세션 동안 팁을 껐는지 확인
     useEffect(() => {
@@ -14,6 +16,13 @@ const TipPanel = () => {
         if (isHidden) {
             setIsVisible(false);
         }
+
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
     useEffect(() => {
@@ -35,7 +44,7 @@ const TipPanel = () => {
 
     if (!isVisible) {
         return (
-            <Panel position="bottom-right" className="mb-4 mr-4">
+            <Panel position={isMobile ? "top-right" : "bottom-right"} className={cn("mr-4 z-[110]", isMobile ? "mt-4" : "mb-4")}>
                 <button
                     onClick={() => {
                         setIsVisible(true);
@@ -51,12 +60,18 @@ const TipPanel = () => {
     }
 
     return (
-        <Panel position="bottom-right" className="bg-white/80 backdrop-blur-md p-3.5 pl-4 pr-10 rounded-2xl shadow-toss mb-4 mr-4 border border-white/50 animate-in fade-in slide-in-from-right duration-500 max-w-xs md:max-w-md relative group">
+        <Panel
+            position={isMobile ? 'top-right' : 'bottom-right'}
+            className={cn(
+                "bg-white/80 backdrop-blur-md p-3.5 pl-4 pr-10 rounded-2xl shadow-toss mr-4 border border-white/50 animate-in fade-in slide-in-from-right duration-500 max-w-[280px] md:max-w-md relative group z-[110]",
+                isMobile ? "mt-4" : "mb-4"
+            )}
+        >
             <div className="flex items-start gap-2.5">
                 <div className="mt-0.5 bg-toss-blue/10 p-1.5 rounded-lg shrink-0">
                     <Info size={14} className="text-toss-blue" />
                 </div>
-                <div className="text-[12px] md:text-[13px] text-gray-700 font-medium leading-relaxed">
+                <div className="text-[11px] md:text-[13px] text-gray-700 font-medium leading-relaxed">
                     <span className="font-bold text-toss-blue mr-1">팁:</span>
                     {tip}
                 </div>
@@ -64,7 +79,7 @@ const TipPanel = () => {
 
             <button
                 onClick={handleClose}
-                className="absolute top-2 right-2 p-1.5 rounded-lg text-gray-300 hover:text-gray-500 hover:bg-gray-100/50 transition-all opacity-0 group-hover:opacity-100"
+                className="absolute top-2 right-2 p-1.5 rounded-lg text-gray-300 hover:text-gray-500 hover:bg-gray-100/50 transition-all opacity-0 group-hover:opacity-100 md:opacity-0"
                 title="팁 끄기"
             >
                 <X size={14} />

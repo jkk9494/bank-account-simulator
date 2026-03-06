@@ -134,10 +134,10 @@ export default function SimulationSidePanel() {
                 </section>
             </div>
 
-            <div className="p-4 border-t border-gray-50 flex gap-2 bg-gray-50/30 shrink-0">
+            <div className="p-4 md:p-5 border-t border-gray-50 flex gap-2 bg-gray-50/30 shrink-0 pb-20 md:pb-5">
                 <button
                     onClick={resetSimulation}
-                    className="flex-1 h-14 rounded-2xl font-bold bg-toss-blue text-white hover:bg-toss-blue-hover shadow-md transition-all active:scale-95"
+                    className="flex-1 h-14 rounded-2xl font-bold bg-toss-blue text-white hover:bg-toss-blue-hover shadow-lg transition-all active:scale-95"
                 >
                     다시 해보기
                 </button>

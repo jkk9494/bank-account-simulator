@@ -75,7 +75,7 @@ export default function EditNodeModal() {
 
     return (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/30 backdrop-blur-sm animate-in fade-in duration-200">
-            <div className="bg-white w-full md:max-w-lg h-full md:h-auto md:max-h-[85vh] md:rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+            <div className="bg-white w-full md:max-w-lg h-auto max-h-[90vh] md:max-h-[85vh] rounded-3xl md:rounded-3xl shadow-2xl flex flex-col overflow-hidden mb-20 md:mb-0">
                 <div className="p-5 md:p-6 border-b border-gray-50 flex items-center justify-between shrink-0">
                     <h2 className="text-lg md:text-xl font-bold text-gray-900">통장 상세 설정</h2>
                     <button onClick={() => setEditingNodeId(null)} className="p-2 hover:bg-gray-100 rounded-full text-gray-400">
